@@ -9,11 +9,22 @@ class Coffee {
     val coffeeDays = MutableLiveData<Int>()
     val lastDate = MutableLiveData<Date>()
 
+    val totalStats = MutableLiveData<Stats>()
+    val todayStats = MutableLiveData<Stats>()
+
     fun addCoffee() {
 
     }
 
-    fun addCoffeeDay() {
+    fun getTodayStats() {
+
+    }
+
+    fun saveToTodayStats() {
+
+    }
+
+    fun saveToTotalStats() {
 
     }
 }
