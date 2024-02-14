@@ -3,10 +3,10 @@ package com.d.coffeetracker
 import android.content.Context
 import android.view.View
 import android.view.Window
-import android.view.WindowInsetsController
 import android.view.animation.AnimationUtils
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlinx.coroutines.delay
+import java.util.Calendar
 
 object MyUtils {
 
@@ -28,15 +28,19 @@ object MyUtils {
         context.getSharedPreferences(sharedPrefs, sharedPrefsMode).edit().apply {
             when (value) {
                 Boolean -> { putBoolean(key, value.toString().toBoolean()) }
-                String -> { putString(key, value.toString()) }
-                Int -> { putInt(key, value.toString().toInt()) }
-                else -> {putString(key, value.toString())}
+                String  -> { putString(key, value.toString()) }
+                Int     -> { putInt(key, value.toString().toInt()) }
+                else    -> { putString(key, value.toString()) }
             }
         }.apply()
     }
 
     fun getFromSharedPrefs(context: Context, key: String) : String {
         return context.getSharedPreferences(sharedPrefs, sharedPrefsMode).getString(key, sharedPrefNotFound).toString()
+    }
+
+    fun getTodayDate() : String {
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR}"
     }
 
     suspend fun View.autoAnimate(animID: Int, fillBefore: Boolean? = null, fillAfter: Boolean? = null, delayBefore: Long? = null, delayAfter: Long? = null) {
