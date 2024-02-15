@@ -1,9 +1,5 @@
 package com.d.coffeetracker.arch
 
-import com.d.coffeetracker.arch.CoffeeVM.CoffeeSizes
-import com.d.coffeetracker.arch.CoffeeVM.CoffeeSizesML
-
-
 class Stats(
     val day: String,
     val date: String,

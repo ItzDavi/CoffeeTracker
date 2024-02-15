@@ -10,10 +10,14 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        loadUI()
+
+        setListeners()
     }
 
     private fun loadUI() {
-
+        MyUtils.setStatusBarColor(this, window, R.color.background)
     }
 
     private fun setListeners() {

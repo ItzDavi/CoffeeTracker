@@ -12,7 +12,7 @@ object MyUtils {
 
     private const val sharedPrefs = "coffee_tracker"
     private const val sharedPrefsMode = Context.MODE_PRIVATE
-    private const val sharedPrefNotFound = "Not Found"
+    private const val sharedPrefNotFound = "No record"
 
     fun setStatusBarColor(context: Context, window: Window, color: Int, light: Boolean? = null) {
         window.statusBarColor = context.getColor(color)

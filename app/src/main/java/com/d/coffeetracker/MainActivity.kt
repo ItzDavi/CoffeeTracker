@@ -3,19 +3,23 @@ package com.d.coffeetracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.d.coffeetracker.arch.CoffeeSizes
+import com.d.coffeetracker.arch.CoffeeStats
 import com.d.coffeetracker.arch.CoffeeVM
-import com.d.coffeetracker.arch.CoffeeVM.CoffeeSizes
 import com.d.coffeetracker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var viewModel: CoffeeVM
+
+    private lateinit var selectedTodayStat: CoffeeStats
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = CoffeeVM()
 
         setListeners()
 
@@ -28,6 +32,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadUI() {
+        MyUtils.setStatusBarColor(this, window, R.color.background)
+
+        with (binding) {
+            lottieAnimation.playAnimation()
+        }
+
         loadTodayStats()
         loadTotalStats()
     }
@@ -39,15 +49,21 @@ class MainActivity : AppCompatActivity() {
 
         with (binding) {
             smallCupLayout.setOnClickListener {
-                viewModel.addCoffee(CoffeeSizes.SMALL)
+                synchronized(context) {
+                    viewModel.addCoffee(CoffeeSizes.SMALL)
+                }
             }
 
             mediumCupLayout.setOnClickListener {
-                viewModel.addCoffee(CoffeeSizes.MEDIUM)
+                synchronized(context) {
+                    viewModel.addCoffee(CoffeeSizes.MEDIUM)
+                }
             }
 
             grandeCupLayout.setOnClickListener {
-                viewModel.addCoffee(CoffeeSizes.GRANDE)
+                synchronized(context) {
+                    viewModel.addCoffee(CoffeeSizes.GRANDE)
+                }
             }
 
             settings.setOnClickListener {
@@ -87,6 +103,15 @@ class MainActivity : AppCompatActivity() {
     private fun loadTodayStats() {
         viewModel.getTodayStats()?.let {
 
+        }
+    }
+
+    private fun changeSelected(new: CoffeeStats) {
+        when (selectedTodayStat) {
+            CoffeeStats.DEFAULT -> {  }
+            CoffeeStats.SMALL  ->  {  }
+            CoffeeStats.MEDIUM ->  {  }
+            CoffeeStats.GRANDE ->  {  }
         }
     }
 }
