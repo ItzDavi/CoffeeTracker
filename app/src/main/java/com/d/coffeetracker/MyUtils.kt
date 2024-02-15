@@ -12,7 +12,7 @@ object MyUtils {
 
     private const val sharedPrefs = "coffee_tracker"
     private const val sharedPrefsMode = Context.MODE_PRIVATE
-    private const val sharedPrefNotFound = "No record"
+    const val SharedPrefNotFound = "No record"
 
     fun setStatusBarColor(context: Context, window: Window, color: Int, light: Boolean? = null) {
         window.statusBarColor = context.getColor(color)
@@ -36,7 +36,7 @@ object MyUtils {
     }
 
     fun getFromSharedPrefs(context: Context, key: String) : String {
-        return context.getSharedPreferences(sharedPrefs, sharedPrefsMode).getString(key, sharedPrefNotFound).toString()
+        return context.getSharedPreferences(sharedPrefs, sharedPrefsMode).getString(key, SharedPrefNotFound).toString()
     }
 
     fun getTodayDate() : String {

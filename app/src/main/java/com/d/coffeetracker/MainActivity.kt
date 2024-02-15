@@ -5,6 +5,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.d.coffeetracker.arch.CoffeeSizes
 import com.d.coffeetracker.arch.CoffeeSizesML
 import com.d.coffeetracker.arch.CoffeeStats
@@ -13,15 +16,17 @@ import com.d.coffeetracker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: CoffeeVM
+
+    private val viewModel: CoffeeVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = CoffeeVM()
-        viewModel.addCoffee(CoffeeSizes.SMALL)
+        if (MyUtils.getFromSharedPrefs(this, "first_setup") == MyUtils.SharedPrefNotFound) {
+            firstSetup()
+        }
 
         setListeners()
 
@@ -107,6 +112,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun loadStats(filter: CoffeeStats) {
         with (binding) {
             viewModel.getTodayStats()?.let { stat ->
@@ -134,5 +140,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadTotalStats() {
 
+    }
+
+    private fun firstSetup() {
+        val context = this
+
+        MyUtils.apply {
+            saveToSharedPrefs(context, "first_setup", true)
+
+            saveToSharedPrefs(context, "today_small_cups", 0)
+            saveToSharedPrefs(context, "today_medium_cups", 0)
+            saveToSharedPrefs(context, "today_grande_cups", 0)
+
+            saveToSharedPrefs(context, "total_small_cups", 0)
+            saveToSharedPrefs(context, "total_medium_cups", 0)
+            saveToSharedPrefs(context, "total_grande_cups", 0)
+        }
     }
 }
