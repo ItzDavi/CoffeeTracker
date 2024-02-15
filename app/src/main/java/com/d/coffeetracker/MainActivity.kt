@@ -1,9 +1,12 @@
 package com.d.coffeetracker
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.d.coffeetracker.arch.CoffeeSizes
+import com.d.coffeetracker.arch.CoffeeSizesML
 import com.d.coffeetracker.arch.CoffeeStats
 import com.d.coffeetracker.arch.CoffeeVM
 import com.d.coffeetracker.databinding.ActivityMainBinding
@@ -12,14 +15,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: CoffeeVM
 
-    private lateinit var selectedTodayStat: CoffeeStats
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel = CoffeeVM()
+        viewModel.addCoffee(CoffeeSizes.SMALL)
 
         setListeners()
 
@@ -37,9 +39,6 @@ class MainActivity : AppCompatActivity() {
         with (binding) {
             lottieAnimation.playAnimation()
         }
-
-        loadTodayStats()
-        loadTotalStats()
     }
 
     private fun setListeners() {
@@ -53,13 +52,11 @@ class MainActivity : AppCompatActivity() {
                     viewModel.addCoffee(CoffeeSizes.SMALL)
                 }
             }
-
             mediumCupLayout.setOnClickListener {
                 synchronized(context) {
                     viewModel.addCoffee(CoffeeSizes.MEDIUM)
                 }
             }
-
             grandeCupLayout.setOnClickListener {
                 synchronized(context) {
                     viewModel.addCoffee(CoffeeSizes.GRANDE)
@@ -68,6 +65,19 @@ class MainActivity : AppCompatActivity() {
 
             settings.setOnClickListener {
                 startActivity(Intent(context, SettingsActivity::class.java))
+                if (Build.VERSION.SDK_INT < 34) {
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+            }
+
+            todayStatsSmall.setOnClickListener {
+                loadStats(CoffeeStats.SMALL)
+            }
+            todayStatsMedium.setOnClickListener {
+                loadStats(CoffeeStats.MEDIUM)
+            }
+            todayStatsGrande.setOnClickListener {
+                loadStats(CoffeeStats.GRANDE)
             }
         }
     }
@@ -88,30 +98,41 @@ class MainActivity : AppCompatActivity() {
 
         with (viewModel) {
             totalStats.observe(context) {
-                loadTotalStats()
+                loadStats(CoffeeStats.TOTAL)
             }
 
             todayStats.observe(context) {
-                loadTodayStats()
+                Toast.makeText(context, "Fired observer", Toast.LENGTH_SHORT).show()
+                loadStats(CoffeeStats.SMALL)
+            }
+        }
+    }
+    private fun loadStats(filter: CoffeeStats) {
+        with (binding) {
+            viewModel.getTodayStats()?.let { stat ->
+                when (filter) {
+                    CoffeeStats.TOTAL  ->  { loadTotalStats() }
+                    CoffeeStats.SMALL  ->  {
+                        todayStatsDetailImage.setImageResource(R.drawable.small_cup)
+                        todayStatsDetailVolume.text = (stat.smallCups.size * CoffeeSizesML.SMALL.ml).toString()
+                        "AAA: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                    }
+                    CoffeeStats.MEDIUM ->  {
+                        todayStatsDetailImage.setImageResource(R.drawable.grande_cup)
+                        todayStatsDetailVolume.text = (stat.mediumCups.size * CoffeeSizesML.MEDIUM.ml).toString()
+                        "BBB: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                    }
+                    CoffeeStats.GRANDE ->  {
+                        todayStatsDetailImage.setImageResource(R.drawable.medium_cup)
+                        todayStatsDetailVolume.text = (stat.grandeCups.size * CoffeeSizesML.GRANDE.ml).toString()
+                        "CCC: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                    }
+                }
             }
         }
     }
 
     private fun loadTotalStats() {
-    }
 
-    private fun loadTodayStats() {
-        viewModel.getTodayStats()?.let {
-
-        }
-    }
-
-    private fun changeSelected(new: CoffeeStats) {
-        when (selectedTodayStat) {
-            CoffeeStats.DEFAULT -> {  }
-            CoffeeStats.SMALL  ->  {  }
-            CoffeeStats.MEDIUM ->  {  }
-            CoffeeStats.GRANDE ->  {  }
-        }
     }
 }

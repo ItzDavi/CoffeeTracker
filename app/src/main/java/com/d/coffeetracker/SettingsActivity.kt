@@ -1,5 +1,6 @@
 package com.d.coffeetracker
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.d.coffeetracker.databinding.ActivitySettingsBinding
@@ -24,6 +25,9 @@ class SettingsActivity : AppCompatActivity() {
         with (binding) {
             back.setOnClickListener {
                 finish()
+                if (Build.VERSION.SDK_INT < 34) {
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                }
             }
         }
     }

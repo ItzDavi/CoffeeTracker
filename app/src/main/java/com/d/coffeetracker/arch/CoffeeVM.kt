@@ -13,7 +13,7 @@ class CoffeeVM {
     val todayStats = MutableLiveData<Stats>()
 
     fun addCoffee(type: CoffeeSizes) {
-        coffeeCount.postValue(coffeeCount.value?.plus(1))
+        coffeeCount.postValue(coffeeCount.value?.plus(1) ?: 1)
 
         when (type) {
             CoffeeSizes.SMALL -> {
