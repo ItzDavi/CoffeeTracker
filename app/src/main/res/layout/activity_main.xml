@@ -365,6 +365,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
+                    android:id="@+id/total_stats_small_ml"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="100 ml"
@@ -410,6 +411,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
+                    android:id="@+id/total_stats_medium_ml"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="100 ml"
@@ -454,6 +456,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
+                    android:id="@+id/total_stats_grande_ml"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="100 ml"

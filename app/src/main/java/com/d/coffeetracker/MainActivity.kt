@@ -24,8 +24,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (MyUtils.getFromSharedPrefs(this, "first_setup") == MyUtils.SharedPrefNotFound) {
-            firstSetup()
+        if (MyUtils.getFromSharedPrefs(this, Constants.SP_FIRST_SETUP) == MyUtils.SharedPrefNotFound) {
+            viewModel.firstSetup(this)
+        } else {
+            viewModel.init(this)
         }
 
         setListeners()
@@ -40,10 +42,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUI() {
         MyUtils.setStatusBarColor(this, window, R.color.background)
-
-        with (binding) {
-            lottieAnimation.playAnimation()
-        }
     }
 
     private fun setListeners() {
@@ -53,19 +51,13 @@ class MainActivity : AppCompatActivity() {
 
         with (binding) {
             smallCupLayout.setOnClickListener {
-                synchronized(context) {
-                    viewModel.addCoffee(CoffeeSizes.SMALL)
-                }
+                viewModel.addCoffee(context, CoffeeSizes.SMALL)
             }
             mediumCupLayout.setOnClickListener {
-                synchronized(context) {
-                    viewModel.addCoffee(CoffeeSizes.MEDIUM)
-                }
+                viewModel.addCoffee(context, CoffeeSizes.MEDIUM)
             }
             grandeCupLayout.setOnClickListener {
-                synchronized(context) {
-                    viewModel.addCoffee(CoffeeSizes.GRANDE)
-                }
+                viewModel.addCoffee(context, CoffeeSizes.GRANDE)
             }
 
             settings.setOnClickListener {
@@ -107,7 +99,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             todayStats.observe(context) {
-                Toast.makeText(context, "Fired observer", Toast.LENGTH_SHORT).show()
                 loadStats(CoffeeStats.SMALL)
             }
         }
@@ -120,18 +111,18 @@ class MainActivity : AppCompatActivity() {
                     CoffeeStats.TOTAL  ->  { loadTotalStats() }
                     CoffeeStats.SMALL  ->  {
                         todayStatsDetailImage.setImageResource(R.drawable.small_cup)
-                        todayStatsDetailVolume.text = (stat.smallCups.size * CoffeeSizesML.SMALL.ml).toString()
-                        "AAA: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                        "${stat.smallCupsCount.toInt() * CoffeeSizesML.SMALL.ml}ml".also { todayStatsDetailVolume.text = it }
+                        "Cups: ${stat.smallCupsCount}".also { todayStatsDetailCount.text = it }
                     }
                     CoffeeStats.MEDIUM ->  {
                         todayStatsDetailImage.setImageResource(R.drawable.grande_cup)
-                        todayStatsDetailVolume.text = (stat.mediumCups.size * CoffeeSizesML.MEDIUM.ml).toString()
-                        "BBB: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                            "${stat.mediumCupsCount.toInt() * CoffeeSizesML.MEDIUM.ml}ml".also { todayStatsDetailVolume.text = it }
+                        "Cups: ${stat.mediumCupsCount}".also { todayStatsDetailCount.text = it }
                     }
                     CoffeeStats.GRANDE ->  {
                         todayStatsDetailImage.setImageResource(R.drawable.medium_cup)
-                        todayStatsDetailVolume.text = (stat.grandeCups.size * CoffeeSizesML.GRANDE.ml).toString()
-                        "CCC: ${stat.smallCups.size}".also { todayStatsDetailCount.text = it }
+                        "${stat.grandeCupsCount.toInt() * CoffeeSizesML.GRANDE.ml}ml".also { todayStatsDetailVolume.text = it }
+                        "Cups: ${stat.grandeCupsCount}".also { todayStatsDetailCount.text = it }
                     }
                 }
             }
@@ -139,22 +130,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadTotalStats() {
+        with (binding) {
+            viewModel.getTotalStats()?.let { stat ->
+                "x${stat.smallCupsCount}".also { totalStatsSmallQuantity.text = it }
+                "${stat.smallCupsCount.toInt() * CoffeeSizesML.SMALL.ml}ml".also { totalStatsSmallMl.text = it }
 
-    }
+                "x${stat.mediumCupsCount}".also { totalStatsMediumQuantity.text = it }
+                "${stat.mediumCupsCount.toInt() * CoffeeSizesML.MEDIUM.ml}ml".also { totalStatsMediumMl.text = it }
 
-    private fun firstSetup() {
-        val context = this
-
-        MyUtils.apply {
-            saveToSharedPrefs(context, "first_setup", true)
-
-            saveToSharedPrefs(context, "today_small_cups", 0)
-            saveToSharedPrefs(context, "today_medium_cups", 0)
-            saveToSharedPrefs(context, "today_grande_cups", 0)
-
-            saveToSharedPrefs(context, "total_small_cups", 0)
-            saveToSharedPrefs(context, "total_medium_cups", 0)
-            saveToSharedPrefs(context, "total_grande_cups", 0)
+                "x${stat.grandeCupsCount}".also { totalStatsGrandeQuantity.text = it }
+                "${stat.grandeCupsCount.toInt() * CoffeeSizesML.GRANDE.ml}ml".also { totalStatsGrandeMl.text = it }
+            }
         }
     }
 }
