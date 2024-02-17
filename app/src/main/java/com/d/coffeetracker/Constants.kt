@@ -12,7 +12,4 @@ object Constants {
     const val SP_TOTAL_GC = "TOTAL_GRANDE_CUPS"
 
     const val SP_DAYS_COUNT = "DAYS_COUNT"
-
-    val SP_TODAY_ARRAY = arrayListOf(SP_TODAY_SC, SP_TODAY_MC, SP_TODAY_GC)
-    val SP_TOTAL_ARRAY = arrayListOf(SP_TOTAL_SC, SP_TOTAL_MC, SP_TOTAL_GC)
 }

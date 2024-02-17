@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.d.coffeetracker.arch.CoffeeSizes
 import com.d.coffeetracker.arch.CoffeeSizesML
 import com.d.coffeetracker.arch.CoffeeStats
@@ -130,6 +127,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadTotalStats() {
+        val context = this
+
         with (binding) {
             viewModel.getTotalStats()?.let { stat ->
                 "x${stat.smallCupsCount}".also { totalStatsSmallQuantity.text = it }
@@ -140,6 +139,8 @@ class MainActivity : AppCompatActivity() {
 
                 "x${stat.grandeCupsCount}".also { totalStatsGrandeQuantity.text = it }
                 "${stat.grandeCupsCount.toInt() * CoffeeSizesML.GRANDE.ml}ml".also { totalStatsGrandeMl.text = it }
+
+                coffeeDays.text = MyUtils.getFromSharedPrefs(context, Constants.SP_DAYS_COUNT)
             }
         }
     }

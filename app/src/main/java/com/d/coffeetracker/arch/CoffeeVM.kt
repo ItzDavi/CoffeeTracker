@@ -147,7 +147,7 @@ class CoffeeVM : ViewModel() {
         }
     }
 
-    fun saveTodayDate() {
+    private fun saveTodayDate() {
         MyUtils.getTodayDate().apply {
             if (this != lastDate.value) {
                 lastDate.postValue(this)
@@ -161,11 +161,5 @@ class CoffeeVM : ViewModel() {
 
     fun getTotalStats(): Stats? {
         return totalStats.value
-    }
-
-    fun saveToTodayStats() {
-    }
-
-    fun saveToTotalStats() {
     }
 }
