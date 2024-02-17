@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: CoffeeVM by viewModels()
 
+    private var mLastChanged = CoffeeStats.SMALL
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -91,15 +93,21 @@ class MainActivity : AppCompatActivity() {
         val context = this
 
         with (viewModel) {
+            lastChanged.observe(context) {
+                mLastChanged = it
+            }
+
             totalStats.observe(context) {
                 loadStats(CoffeeStats.TOTAL)
             }
 
             todayStats.observe(context) {
-                loadStats(CoffeeStats.SMALL)
+                loadStats(mLastChanged)
             }
         }
     }
+
+
 
     private fun loadStats(filter: CoffeeStats) {
         with (binding) {
@@ -113,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     CoffeeStats.MEDIUM ->  {
                         todayStatsDetailImage.setImageResource(R.drawable.grande_cup)
-                            "${stat.mediumCupsCount.toInt() * CoffeeSizesML.MEDIUM.ml}ml".also { todayStatsDetailVolume.text = it }
+                        "${stat.mediumCupsCount.toInt() * CoffeeSizesML.MEDIUM.ml}ml".also { todayStatsDetailVolume.text = it }
                         "Cups: ${stat.mediumCupsCount}".also { todayStatsDetailCount.text = it }
                     }
                     CoffeeStats.GRANDE ->  {

@@ -270,7 +270,7 @@
                         android:layout_marginVertical="8dp"
                         android:paddingVertical="4dp"
                         android:background="@drawable/cups_background"
-                        android:src="@drawable/medium_cup"/>
+                        android:src="@drawable/grande_cup"/>
 
                     <ImageView
                         android:id="@+id/today_stats_grande"
@@ -280,7 +280,7 @@
                         android:contentDescription="@string/grande_cup"
                         android:paddingVertical="4dp"
                         android:background="@drawable/cups_background"
-                        android:src="@drawable/grande_cup"/>
+                        android:src="@drawable/medium_cup"/>
 
                 </LinearLayout>
 

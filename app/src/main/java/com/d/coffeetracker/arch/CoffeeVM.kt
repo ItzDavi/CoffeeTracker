@@ -15,6 +15,8 @@ class CoffeeVM : ViewModel() {
     val totalStats = MutableLiveData<Stats>()
     val todayStats = MutableLiveData<Stats>()
 
+    val lastChanged = MutableLiveData<CoffeeStats>()
+
     fun init(context: Context) {
         with (MyUtils) {
             var todaySmallCups = getFromSharedPrefs(context, Constants.SP_TODAY_SC)
@@ -91,6 +93,10 @@ class CoffeeVM : ViewModel() {
                     saveToSharedPrefs(context, Constants.SP_TOTAL_SC, tempTotalStats?.smallCupsCount)
                 }
 
+                if (lastChanged.value?.name != type.name) {
+                    lastChanged.postValue(CoffeeStats.SMALL)
+                }
+
                 updateTodayStats(tempTodayStats)
                 updateTotalStats(tempTotalStats)
             }
@@ -110,6 +116,10 @@ class CoffeeVM : ViewModel() {
                     saveToSharedPrefs(context, Constants.SP_TOTAL_MC, tempTotalStats?.mediumCupsCount)
                 }
 
+                if (lastChanged.value?.name != type.name) {
+                    lastChanged.postValue(CoffeeStats.MEDIUM)
+                }
+
                 updateTodayStats(tempTodayStats)
                 updateTotalStats(tempTotalStats)
             }
@@ -127,6 +137,10 @@ class CoffeeVM : ViewModel() {
                 with (MyUtils) {
                     saveToSharedPrefs(context, Constants.SP_TODAY_GC, tempTodayStats?.grandeCupsCount)
                     saveToSharedPrefs(context, Constants.SP_TOTAL_GC, tempTotalStats?.grandeCupsCount)
+                }
+
+                if (lastChanged.value?.name != type.name) {
+                    lastChanged.postValue(CoffeeStats.GRANDE)
                 }
 
                 updateTodayStats(tempTodayStats)
