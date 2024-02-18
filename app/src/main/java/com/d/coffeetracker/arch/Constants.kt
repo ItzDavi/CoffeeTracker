@@ -1,4 +1,4 @@
-package com.d.coffeetracker
+package com.d.coffeetracker.arch
 
 object Constants {
     const val SP_FIRST_SETUP = "FIRST_SETUP"
