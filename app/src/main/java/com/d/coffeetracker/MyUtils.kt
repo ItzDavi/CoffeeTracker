@@ -39,6 +39,10 @@ object MyUtils {
         return context.getSharedPreferences(sharedPrefs, sharedPrefsMode).getString(key, SharedPrefNotFound).toString()
     }
 
+    fun resetSharedPrefs(context: Context) {
+        context.getSharedPreferences(sharedPrefs, sharedPrefsMode).edit().clear().apply()
+    }
+
     fun getTodayDate() : String {
         return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR}"
     }

@@ -19,4 +19,5 @@
     <string name="open">Open</string>
     <string name="icons">Icons</string>
     <string name="attributions">Attributions</string>
+    <string name="reset_stats">Reset stats</string>
 </resources>

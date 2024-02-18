@@ -114,6 +114,8 @@ class MainActivity : AppCompatActivity() {
             todayStats.removeObservers(context)
 
             setObservers()
+
+            init(context)
         }
     }
 
@@ -131,6 +133,26 @@ class MainActivity : AppCompatActivity() {
 
             todayStats.observe(context) {
                 loadStats(mLastChanged)
+
+                    when (mLastChanged) {
+                        CoffeeStats.SMALL  ->  {
+                            binding.todayStatsSmall.selectStat()
+                            binding.todayStatsMedium.unselectStat()
+                            binding.todayStatsGrande.unselectStat()
+                        }
+                        CoffeeStats.MEDIUM ->  {
+                            binding.todayStatsMedium.selectStat()
+                            binding.todayStatsSmall.unselectStat()
+                            binding.todayStatsGrande.unselectStat()
+                        }
+                        CoffeeStats.GRANDE ->  {
+                            binding.todayStatsGrande.selectStat()
+                            binding.todayStatsMedium.unselectStat()
+                            binding.todayStatsSmall.unselectStat()
+                        }
+                        else -> {}
+                    }
+
             }
         }
     }
