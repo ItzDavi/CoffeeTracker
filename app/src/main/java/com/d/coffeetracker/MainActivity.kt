@@ -145,9 +145,7 @@ class MainActivity : AppCompatActivity() {
                 when (filter) {
                     CoffeeStats.TOTAL  ->  { loadTotalStats() }
                     CoffeeStats.SMALL  ->  {
-                        lifecycleScope.launch {
-                            //todayStatsDetailImage.animateStatChange()
-                        }
+                        todayStatsDetailImage.setImageResource(R.drawable.small_cup)
                         "${stat.smallCupsCount.toInt() * CoffeeSizesML.SMALL.ml}ml".also { todayStatsDetailVolume.text = it }
                         "Cups: ${stat.smallCupsCount}".also { todayStatsDetailCount.text = it }
                     }
