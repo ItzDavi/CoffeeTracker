@@ -15,4 +15,8 @@
     <string name="default_days">123 days</string>
     <string name="x100">x100</string>
     <string name="_100_ml">100 ml</string>
+    <string name="back">Back</string>
+    <string name="open">Open</string>
+    <string name="icons">Icons</string>
+    <string name="attributions">Attributions</string>
 </resources>

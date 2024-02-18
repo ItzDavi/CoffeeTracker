@@ -4,13 +4,20 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.d.coffeetracker.arch.CoffeeSizes
 import com.d.coffeetracker.arch.CoffeeSizesML
 import com.d.coffeetracker.arch.CoffeeStats
 import com.d.coffeetracker.arch.CoffeeVM
 import com.d.coffeetracker.arch.Constants
 import com.d.coffeetracker.databinding.ActivityMainBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: CoffeeVM by viewModels()
 
     private var mLastChanged = CoffeeStats.SMALL
+    private var statShowing = CoffeeStats.SMALL
+    private var animatingTodayStats = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,13 +77,31 @@ class MainActivity : AppCompatActivity() {
             }
 
             todayStatsSmall.setOnClickListener {
-                loadStats(CoffeeStats.SMALL)
+                if (statShowing != CoffeeStats.SMALL) {
+                    loadStats(CoffeeStats.SMALL)
+
+                    (it as ImageView).selectStat()
+                    todayStatsMedium.unselectStat()
+                    todayStatsGrande.unselectStat()
+                }
             }
             todayStatsMedium.setOnClickListener {
-                loadStats(CoffeeStats.MEDIUM)
+                if (statShowing != CoffeeStats.MEDIUM) {
+                    loadStats(CoffeeStats.MEDIUM)
+
+                    (it as ImageView).selectStat()
+                    todayStatsSmall.unselectStat()
+                    todayStatsGrande.unselectStat()
+                }
             }
             todayStatsGrande.setOnClickListener {
-                loadStats(CoffeeStats.GRANDE)
+                if (statShowing != CoffeeStats.GRANDE) {
+                    loadStats(CoffeeStats.GRANDE)
+
+                    (it as ImageView).selectStat()
+                    todayStatsSmall.unselectStat()
+                    todayStatsMedium.unselectStat()
+                }
             }
         }
     }
@@ -108,15 +135,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun loadStats(filter: CoffeeStats) {
+
         with (binding) {
             viewModel.getTodayStats()?.let { stat ->
+
+                statShowing = filter
+
                 when (filter) {
                     CoffeeStats.TOTAL  ->  { loadTotalStats() }
                     CoffeeStats.SMALL  ->  {
-                        todayStatsDetailImage.setImageResource(R.drawable.small_cup)
+                        lifecycleScope.launch {
+                            //todayStatsDetailImage.animateStatChange()
+                        }
                         "${stat.smallCupsCount.toInt() * CoffeeSizesML.SMALL.ml}ml".also { todayStatsDetailVolume.text = it }
                         "Cups: ${stat.smallCupsCount}".also { todayStatsDetailCount.text = it }
                     }
@@ -152,5 +183,23 @@ class MainActivity : AppCompatActivity() {
                 coffeeDays.text = MyUtils.getFromSharedPrefs(context, Constants.SP_DAYS_COUNT)
             }
         }
+    }
+
+    private fun ImageView.selectStat() {
+        setBackgroundResource(R.drawable.cups_background)
+    }
+
+    private fun ImageView.unselectStat() {
+        setBackgroundResource(R.drawable.cups_background_unselected)
+    }
+
+    private suspend fun ImageView.animateStatChange() {
+        val slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.fast_slide_up)
+        val slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.fast_slide_down)
+
+        startAnimation(slideUpAnim)
+        delay(100)
+        setImageResource(R.drawable.small_cup)
+        startAnimation(slideDownAnim)
     }
 }

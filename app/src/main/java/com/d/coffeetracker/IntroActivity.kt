@@ -2,11 +2,7 @@ package com.d.coffeetracker
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.scaleMatrix
 import androidx.fragment.app.Fragment
-import com.d.coffeetracker.arch.Constants
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
 import com.github.appintro.AppIntroPageTransformerType
@@ -21,10 +17,6 @@ class IntroActivity : AppIntro2() {
         //if (MyUtils.getFromSharedPrefs(this, Constants.SP_FIRST_SETUP) == MyUtils.SharedPrefNotFound)
 
         setupAndStart()
-    }
-
-    override fun onNextPressed(currentFragment: Fragment?) {
-
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {
