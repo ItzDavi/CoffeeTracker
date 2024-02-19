@@ -12,4 +12,7 @@ object Constants {
     const val SP_TOTAL_GC = "TOTAL_GRANDE_CUPS"
 
     const val SP_DAYS_COUNT = "DAYS_COUNT"
+
+    const val ADD_COFFEE_TAG = "ADD_COFFEE_DF_TAG"
+    const val ADD_COFFEE_ARGS_KEY = "ADD_COFFEE_ARGS_KEY"
 }

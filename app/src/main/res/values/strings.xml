@@ -20,4 +20,8 @@
     <string name="icons">Icons</string>
     <string name="attributions">Attributions</string>
     <string name="reset_stats">Reset stats</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cup">Cup</string>
+    <string name="add_coffee">Add Coffee</string>
 </resources>

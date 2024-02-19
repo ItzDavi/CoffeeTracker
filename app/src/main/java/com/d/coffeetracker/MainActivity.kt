@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.d.coffeetracker.arch.CoffeeSizes
 import com.d.coffeetracker.arch.CoffeeSizesML
 import com.d.coffeetracker.arch.CoffeeStats
 import com.d.coffeetracker.arch.CoffeeVM
 import com.d.coffeetracker.arch.Constants
 import com.d.coffeetracker.databinding.ActivityMainBinding
+import com.d.coffeetracker.fragments.AddCoffeeDialogFragment
+import com.d.coffeetracker.utils.MyUtils
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private var mLastChanged = CoffeeStats.SMALL
     private var statShowing = CoffeeStats.SMALL
+
+    var showingDialog = false
     private var animatingTodayStats = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,13 +60,22 @@ class MainActivity : AppCompatActivity() {
 
         with (binding) {
             smallCupLayout.setOnClickListener {
-                viewModel.addCoffee(context, CoffeeSizes.SMALL)
+                if (!showingDialog) {
+                    showingDialog = true
+                    AddCoffeeDialogFragment.newInstance(CoffeeSizes.SMALL).show(supportFragmentManager, Constants.ADD_COFFEE_TAG)
+                }
             }
             mediumCupLayout.setOnClickListener {
-                viewModel.addCoffee(context, CoffeeSizes.MEDIUM)
+                if (!showingDialog) {
+                    showingDialog = true
+                    AddCoffeeDialogFragment.newInstance(CoffeeSizes.MEDIUM).show(supportFragmentManager, Constants.ADD_COFFEE_TAG)
+                }
             }
             grandeCupLayout.setOnClickListener {
-                viewModel.addCoffee(context, CoffeeSizes.GRANDE)
+                if (!showingDialog) {
+                    showingDialog = true
+                    AddCoffeeDialogFragment.newInstance(CoffeeSizes.GRANDE).show(supportFragmentManager, Constants.ADD_COFFEE_TAG)
+                }
             }
 
             settings.setOnClickListener {
@@ -106,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun resume() {
+    fun resume() {
         val context = this
 
         with (viewModel) {

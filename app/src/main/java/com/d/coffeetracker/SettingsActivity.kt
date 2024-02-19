@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.d.coffeetracker.arch.CoffeeVM
 import com.d.coffeetracker.databinding.ActivitySettingsBinding
+import com.d.coffeetracker.utils.MyUtils
 
 class SettingsActivity : AppCompatActivity() {
 

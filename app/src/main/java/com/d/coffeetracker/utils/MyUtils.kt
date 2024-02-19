@@ -1,11 +1,14 @@
-package com.d.coffeetracker
+package com.d.coffeetracker.utils
 
 import android.content.Context
+import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.animation.AnimationUtils
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlinx.coroutines.delay
+import java.io.Serializable
 import java.util.Calendar
 
 object MyUtils {
@@ -35,6 +38,15 @@ object MyUtils {
         }.apply()
     }
 
+    inline fun <reified T : Serializable> Bundle.customGetSerializable(key: String): T? {
+        @Suppress("DEPRECATION")
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSerializable(key, T::class.java)
+        } else {
+            getSerializable(key) as? T
+        }
+    }
+
     fun getFromSharedPrefs(context: Context, key: String) : String {
         return context.getSharedPreferences(sharedPrefs, sharedPrefsMode).getString(key, SharedPrefNotFound).toString()
     }
@@ -47,7 +59,7 @@ object MyUtils {
         return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR}"
     }
 
-    suspend fun View.autoAnimate(animID: Int, fillBefore: Boolean? = null, fillAfter: Boolean? = null, delayBefore: Long? = null, delayAfter: Long? = null) {
+    suspend inline fun View.autoAnimate(animID: Int, fillBefore: Boolean? = null, fillAfter: Boolean? = null, delayBefore: Long? = null, delayAfter: Long? = null) {
         val anim = AnimationUtils.loadAnimation(context, animID).apply {
             fillBefore?.let {
                 setFillBefore(fillBefore)

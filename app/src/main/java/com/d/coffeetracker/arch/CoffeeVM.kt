@@ -3,7 +3,7 @@ package com.d.coffeetracker.arch
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.d.coffeetracker.MyUtils
+import com.d.coffeetracker.utils.MyUtils
 
 class CoffeeVM : ViewModel() {
 
