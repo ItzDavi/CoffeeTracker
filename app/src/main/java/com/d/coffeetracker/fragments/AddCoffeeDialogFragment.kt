@@ -93,7 +93,6 @@ class AddCoffeeDialogFragment() : DialogFragment() {
                 findViewById<AppCompatButton>(R.id.dialog_button).setOnClickListener {
                     size?.let { s ->
                         viewModel.addCoffee(context, s)
-
                         dialog?.cancel()
                     }
                 }

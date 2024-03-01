@@ -6,5 +6,4 @@ enum class CoffeeSizesML(val ml: Int) {
     MEDIUM(75),
     GRANDE(105)
 }
-
 enum class CoffeeStats { TOTAL, SMALL, MEDIUM, GRANDE}

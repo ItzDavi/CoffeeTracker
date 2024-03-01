@@ -143,25 +143,26 @@ class MainActivity : AppCompatActivity() {
             todayStats.observe(context) {
                 loadStats(mLastChanged)
 
+                with (binding) {
                     when (mLastChanged) {
                         CoffeeStats.SMALL  ->  {
-                            binding.todayStatsSmall.selectStat()
-                            binding.todayStatsMedium.unselectStat()
-                            binding.todayStatsGrande.unselectStat()
+                            todayStatsSmall.selectStat()
+                            todayStatsMedium.unselectStat()
+                            todayStatsGrande.unselectStat()
                         }
                         CoffeeStats.MEDIUM ->  {
-                            binding.todayStatsMedium.selectStat()
-                            binding.todayStatsSmall.unselectStat()
-                            binding.todayStatsGrande.unselectStat()
+                            todayStatsMedium.selectStat()
+                            todayStatsSmall.unselectStat()
+                            todayStatsGrande.unselectStat()
                         }
                         CoffeeStats.GRANDE ->  {
-                            binding.todayStatsGrande.selectStat()
-                            binding.todayStatsMedium.unselectStat()
-                            binding.todayStatsSmall.unselectStat()
+                            todayStatsGrande.selectStat()
+                            todayStatsMedium.unselectStat()
+                            todayStatsSmall.unselectStat()
                         }
                         else -> {}
                     }
-
+                }
             }
         }
     }

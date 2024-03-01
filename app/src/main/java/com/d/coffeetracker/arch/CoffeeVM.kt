@@ -38,14 +38,14 @@ class CoffeeVM : ViewModel() {
                 saveTodayDate()
             }
 
-            todayStats.postValue(Stats(daysCount, todayDate, todaySmallCups, todayMediumCups, todayGrandeCups))
-            totalStats.postValue(Stats(daysCount, todayDate, totalSmallCups, totalMediumCups, totalGrandeCups))
+            todayStats.postValue(Stats(todaySmallCups, todayMediumCups, todayGrandeCups))
+            totalStats.postValue(Stats(totalSmallCups, totalMediumCups, totalGrandeCups))
         }
     }
 
     fun firstSetup(context: Context) {
 
-        val zeroStats = Stats("0", MyUtils.getTodayDate(), "0", "0", "0")
+        val zeroStats = Stats("0", "0", "0")
 
         todayStats.postValue(zeroStats)
         totalStats.postValue(zeroStats)

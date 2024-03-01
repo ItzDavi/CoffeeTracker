@@ -325,6 +325,7 @@
             android:text="@string/default_days"
             android:layout_marginHorizontal="24dp"
             android:textSize="16sp"
+            android:visibility="gone"
             android:fontFamily="@font/poppinsregular"
             android:textColor="@color/fake_white"
             app:layout_constraintTop_toTopOf="@id/total_title"

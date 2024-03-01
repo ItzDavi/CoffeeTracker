@@ -1,5 +1,7 @@
 package com.d.coffeetracker
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,6 +47,10 @@ class SettingsActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT < 34) {
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                 }
+            }
+
+            iconsAttributions.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.flaticon.com/")))
             }
         }
     }
